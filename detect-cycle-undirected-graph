@@ -1,0 +1,57 @@
+https://www.geeksforgeeks.org/deque-in-python/
+https://www.geeksforgeeks.org/detect-cycle-undirected-graph/
+
+from collections import defaultdict
+
+class Graph:
+    def __init__(self, v):
+        # Number of vertices of a graph
+        self.v = v
+
+        #Asjecency list
+        self.graph = defaultdict(list)
+
+    def addVertices ( self, v, w):
+        self.graph[v].append(w)
+        self.graph[w].append(v)
+
+    def printGraph(self):
+        for i in self.graph.keys():
+            print(i,'----> ',self.graph[i],sep = ' ')
+
+    def isCycle(self,v, visited, parent):
+        visited[v] = True
+
+        for x in self.graph[v]:
+            if visited[x] == False:
+                if(self.isCycle(x, visited, v)):
+                    return True
+            elif parent != x:
+                return True
+        return False
+
+
+    def detect_cycle_undeirected_graph(self):
+        visited = [False] * self.v
+
+        for i in range(self.v):
+            if visited[i] == False:
+                if(self.isCycle(i, visited, -1) == True):
+                    return True
+        return False
+
+
+def main():
+    g = Graph(4)
+    g.addVertices(0, 1)
+    g.addVertices(0, 2)
+    g.addVertices(1, 2)
+    g.addVertices(2, 3)
+    g.printGraph()
+
+    if (g.detect_cycle_undeirected_graph()):
+        print("Graph is cyclic")
+    else:
+        print("Graph is not cyclic")
+
+main()
